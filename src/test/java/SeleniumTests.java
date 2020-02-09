@@ -3,8 +3,13 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -15,15 +20,9 @@ public class SeleniumTests {
     private String url = "https://macbook-pro-pawe.local:8181/";
     //private String url = "https://localhost:8181/";
 
-    @BeforeTest
-    public void setUp(){
-        System.setProperty("webdriver.gecko.driver", "/usr/local/Cellar/geckodriver/0.26.0");
-        //System.setProperty("webdriver.gecko.driver", "C:\\Users\\Lukasz\\Desktop\\geckodriver-v0.26.0-win64\\geckodriver.exe");
-        webDriver = new FirefoxDriver();
-    }
-
-    @Test
+    /*@Test
     void modifyLocationTest(){
+        webDriver = new FirefoxDriver();
         webDriver.navigate().to(url + "faces/main/index.xhtml");
         webDriver.findElement(By.xpath("/html/body/div/div[2]/div/div/nav/div/div[2]/ul[1]/li[2]/a")).click(); // przejdz do zakladki logowanie
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr/td/table/tbody/tr[1]/td[2]/input")).sendKeys("JDoe");
@@ -33,7 +32,6 @@ public class SeleniumTests {
         String orgValue = webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[2]")).getText(); //get current value;
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[5]/input[1]")).click(); //click Edycja lokalizacji;
         Select select = new Select(webDriver.findElement(By.xpath("//*[@id=\"EditLocationForm:locationType\"]")));
-        String selectedValue = select.getFirstSelectedOption().getText();
         select.selectByValue("SHELF3");
         String newSelectedValue = select.getFirstSelectedOption().getText();
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/input[2]")).click();//zatwierdzamy zmianę
@@ -50,7 +48,8 @@ public class SeleniumTests {
     }
 
     @Test
-    void addContractorTest(){
+    void addContractorTest() throws InterruptedException {
+        webDriver = new FirefoxDriver();
         webDriver.navigate().to(url + "faces/main/index.xhtml");
         webDriver.findElement(By.xpath("/html/body/div/div[2]/div/div/nav/div/div[2]/ul[1]/li[2]/a")).click(); // przejdz do zakladki logowanie
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr/td/table/tbody/tr[1]/td[2]/input")).sendKeys("LRey");
@@ -58,7 +57,6 @@ public class SeleniumTests {
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/p/input")).click(); //click login
         webDriver.navigate().to(url + "faces/contractor/listContractors.xhtml");
         List<WebElement> rows = webDriver.findElements(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr"));
-        //System.out.println(rows.size());
         Assert.assertEquals(rows.size(),4);
 
         webDriver.navigate().to(url + "faces/contractor/registerContractor.xhtml");
@@ -75,32 +73,28 @@ public class SeleniumTests {
         String name = webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[5]/td[2]")).getText();
         Assert.assertEquals(name, "Jan Kowalski");
         Assert.assertEquals(rows.size(),5);
-
+        WebElement element = webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[5]/td[10]/input[2]"));
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element);
+        Thread.sleep(500);
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[5]/td[10]/input[2]")).click();
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/input[2]")).click();
         webDriver.navigate().to(url + "faces/contractor/listContractors.xhtml");
         rows = webDriver.findElements(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr"));
         Assert.assertEquals(rows.size(),4);
-
-    }
+        webDriver.quit();
+    }*/
 
     @Test
     public void testChangeName() {
+        webDriver = new FirefoxDriver();
         webDriver.get(url + "faces/main/index.xhtml");
-        webDriver.manage().window().setSize(new Dimension(683, 694));
-        webDriver.findElement(By.cssSelector(".navbar-toggle")).click();
-        webDriver.findElement(By.linkText("Sign in")).click();
-        webDriver.findElement(By.name("j_username")).click();
+        webDriver.findElement(By.xpath("/html/body/div/div[2]/div/div/nav/div/div[2]/ul[1]/li[2]/a")).click();
         webDriver.findElement(By.name("j_username")).sendKeys("DMitchell");
-        webDriver.findElement(By.name("j_password")).click();
         webDriver.findElement(By.name("j_password")).sendKeys("P@ssw0rd");
         webDriver.findElement(By.cssSelector("input:nth-child(2)")).click();
-        webDriver.findElement(By.cssSelector(".navbar-toggle")).click();
-        webDriver.findElement(By.linkText("User account")).click();
-        webDriver.findElement(By.linkText("Users accounts")).click();
+        webDriver.navigate().to(url +"aces/account/listAuthorizedAccounts.xhtml");
         webDriver.findElement(By.name("j_idt26:j_idt27:0:j_idt40")).click();
         String originalName = webDriver.findElement(By.id("EditForm:name")).getAttribute("value");
-        webDriver.findElement(By.id("EditForm:name")).click();
         webDriver.findElement(By.id("EditForm:name")).sendKeys("John");
         webDriver.findElement(By.name("EditForm:j_idt32")).click();
         {
@@ -108,13 +102,13 @@ public class SeleniumTests {
             Assert.assertEquals(value, "John");
         }
         webDriver.findElement(By.name("j_idt26:j_idt27:0:j_idt40")).click();
-        webDriver.findElement(By.id("EditForm:name")).click();
         webDriver.findElement(By.id("EditForm:name")).sendKeys(originalName);
         webDriver.findElement(By.name("EditForm:j_idt32")).click();
         {
             String value = webDriver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getAttribute("value");
             Assert.assertEquals(value, originalName);
         }
+        webDriver.quit();
     }
 
 }
