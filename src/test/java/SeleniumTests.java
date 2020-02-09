@@ -85,7 +85,8 @@ public class SeleniumTests {
 
     @Test
     public void testChangeName() {
-        webDriver.get("http://localhost:8080/faces/main/index.xhtml");
+        webDriver.get(url + "faces/main/index.xhtml");
+        webDriver.findElement(By.cssSelector(".navbar-toggle")).click();
         webDriver.findElement(By.linkText("Sign in")).click();
         webDriver.findElement(By.name("j_username")).sendKeys("DMitchell");
         webDriver.findElement(By.name("j_password")).sendKeys("P@ssw0rd");
