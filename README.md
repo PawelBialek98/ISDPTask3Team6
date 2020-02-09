@@ -5,5 +5,3 @@ Jakub Wróbel
 Paweł Białek
 Łukasz Kostrzewa
 Jakub Plich
-
-Testing vol3
