@@ -83,5 +83,30 @@ public class SeleniumTests {
 
     }
 
+    @Test
+    public void testChangeName() {
+        webDriver.get("http://localhost:8080/faces/main/index.xhtml");
+        webDriver.findElement(By.linkText("Sign in")).click();
+        webDriver.findElement(By.name("j_username")).sendKeys("DMitchell");
+        webDriver.findElement(By.name("j_password")).sendKeys("P@ssw0rd");
+        webDriver.findElement(By.cssSelector("input:nth-child(2)")).click();
+        webDriver.findElement(By.linkText("User account")).click();
+        webDriver.findElement(By.linkText("Users accounts")).click();
+        webDriver.findElement(By.name("j_idt26:j_idt27:0:j_idt40")).click();
+        String originalName = webDriver.findElement(By.id("EditForm:name")).getAttribute("value");
+        webDriver.findElement(By.id("EditForm:name")).sendKeys("John");
+        webDriver.findElement(By.name("EditForm:j_idt32")).click();
+        {
+            String value = webDriver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getAttribute("value");
+            Assert.assertEquals(value, "John");
+        }
+        webDriver.findElement(By.name("j_idt26:j_idt27:0:j_idt40")).click();
+        webDriver.findElement(By.id("EditForm:name")).sendKeys(originalName);
+        webDriver.findElement(By.name("EditForm:j_idt32")).click();
+        {
+            String value = webDriver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getAttribute("value");
+            Assert.assertEquals(value, originalName);
+        }
+    }
 
 }
