@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -86,15 +87,20 @@ public class SeleniumTests {
     @Test
     public void testChangeName() {
         webDriver.get(url + "faces/main/index.xhtml");
+        webDriver.manage().window().setSize(new Dimension(683, 694));
         webDriver.findElement(By.cssSelector(".navbar-toggle")).click();
         webDriver.findElement(By.linkText("Sign in")).click();
+        webDriver.findElement(By.name("j_username")).click();
         webDriver.findElement(By.name("j_username")).sendKeys("DMitchell");
+        webDriver.findElement(By.name("j_password")).click();
         webDriver.findElement(By.name("j_password")).sendKeys("P@ssw0rd");
         webDriver.findElement(By.cssSelector("input:nth-child(2)")).click();
+        webDriver.findElement(By.cssSelector(".navbar-toggle")).click();
         webDriver.findElement(By.linkText("User account")).click();
         webDriver.findElement(By.linkText("Users accounts")).click();
         webDriver.findElement(By.name("j_idt26:j_idt27:0:j_idt40")).click();
         String originalName = webDriver.findElement(By.id("EditForm:name")).getAttribute("value");
+        webDriver.findElement(By.id("EditForm:name")).click();
         webDriver.findElement(By.id("EditForm:name")).sendKeys("John");
         webDriver.findElement(By.name("EditForm:j_idt32")).click();
         {
@@ -102,6 +108,7 @@ public class SeleniumTests {
             Assert.assertEquals(value, "John");
         }
         webDriver.findElement(By.name("j_idt26:j_idt27:0:j_idt40")).click();
+        webDriver.findElement(By.id("EditForm:name")).click();
         webDriver.findElement(By.id("EditForm:name")).sendKeys(originalName);
         webDriver.findElement(By.name("EditForm:j_idt32")).click();
         {
