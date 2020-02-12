@@ -3,14 +3,20 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 public class SeleniumTests {
     WebDriver webDriver;
-    private String url = "https://macbook-pro-pawe.local:8181/";
-    //private String url = "https://localhost:8181/";
+    //private String url = "https://macbook-pro-pawe.local:8181/";
+    private String url = "https://localhost:8181/";
+
+    @BeforeTest
+    void setUp(){
+        System.setProperty("webdriver.gecko.driver", "C:\\Users\\Lukasz\\Desktop\\geckodriver-v0.26.0-win64\\geckodriver.exe");
+    }
 
     @Test
     void modifyLocationTest() {
