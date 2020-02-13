@@ -1,6 +1,5 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -13,28 +12,31 @@ public class SeleniumTests {
     //private String url = "https://macbook-pro-pawe.local:8181/";
     private String url = "https://localhost:8181/";
 
-    @BeforeTest
+    /*@BeforeTest
     void setUp(){
         System.setProperty("webdriver.gecko.driver", "C:\\Users\\Lukasz\\Desktop\\geckodriver-v0.26.0-win64\\geckodriver.exe");
-    }
+    }*/
 
     @Test
-    void modifyLocationTest() {
+    void modifyLocationTest() { //Paweł Białek // edycja lokalizacji
         webDriver = new FirefoxDriver();
+
         webDriver.navigate().to(url + "faces/main/index.xhtml");
         webDriver.findElement(By.xpath("/html/body/div/div[2]/div/div/nav/div/div[2]/ul[1]/li[2]/a")).click(); // przejdz do zakladki logowanie
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr/td/table/tbody/tr[1]/td[2]/input")).sendKeys("JDoe");
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr/td/table/tbody/tr[2]/td[2]/input")).sendKeys("P@ssw0rd");
-        webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/p/input")).click(); //click login
+        webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/p/input")).click(); //zaloguj na WAREHOUSE
+
         webDriver.navigate().to(url + "/faces/location/listLocations.xhtml");
-        String orgValue = webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[2]")).getText(); //get current value;
-        webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[5]/input[1]")).click(); //click Edycja lokalizacji;
+        String orgValue = webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[2]")).getText(); //pobierz aktualną wartość
+        webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[5]/input[1]")).click(); //klinkij Edycja lokalizacji;
         Select select = new Select(webDriver.findElement(By.xpath("//*[@id=\"EditLocationForm:locationType\"]")));
         select.selectByValue("SHELF3");
         String newSelectedValue = select.getFirstSelectedOption().getText();
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/input[2]")).click();//zatwierdzamy zmianę
         String curValue = webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[2]")).getText();
         Assert.assertEquals(curValue, newSelectedValue);
+
         //Cofamy zmiany
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr[1]/td[5]/input[1]")).click();
         select = new Select(webDriver.findElement(By.xpath("//*[@id=\"EditLocationForm:locationType\"]")));
@@ -46,13 +48,13 @@ public class SeleniumTests {
     }
 
     @Test
-    void addContractorTest() throws InterruptedException {
+    void addContractorTest() throws InterruptedException { //Łukasz Kostrzwa // dodanie kontrahenta
         webDriver = new FirefoxDriver();
         webDriver.navigate().to(url + "faces/main/index.xhtml");
         webDriver.findElement(By.xpath("/html/body/div/div[2]/div/div/nav/div/div[2]/ul[1]/li[2]/a")).click(); // przejdz do zakladki logowanie
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr/td/table/tbody/tr[1]/td[2]/input")).sendKeys("LRey");
         webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr/td/table/tbody/tr[2]/td[2]/input")).sendKeys("P@ssw0rd");
-        webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/p/input")).click(); //click login
+        webDriver.findElement(By.xpath("/html/body/div/div[3]/div/form/p/input")).click(); //zaloguj na admina
         webDriver.navigate().to(url + "faces/contractor/listContractors.xhtml");
         List<WebElement> rows = webDriver.findElements(By.xpath("/html/body/div/div[3]/div/form/table/tbody/tr"));
         Assert.assertEquals(rows.size(), 4);
@@ -83,7 +85,7 @@ public class SeleniumTests {
     }
 
     @Test
-    public void testChangeName() {
+    public void testChangeName() { //Kuba Wrobel // edycji użytkownika - zmiana imienia
         webDriver = new FirefoxDriver();
         webDriver.get(url + "faces/main/index.xhtml");
         webDriver.findElement(By.xpath("/html/body/div/div[2]/div/div/nav/div/div[2]/ul[1]/li[2]/a")).click();
@@ -112,7 +114,7 @@ public class SeleniumTests {
     }
 
     @Test
-    public void removeLocationTest() {
+    public void removeLocationTest() {//Kuba Plich - Stworzenie lokalizacji
         webDriver = new FirefoxDriver();
 
         webDriver.navigate().to(url + "faces/main/index.xhtml");
@@ -143,6 +145,5 @@ public class SeleniumTests {
 
         webDriver.quit();
     }
-
 
 }
